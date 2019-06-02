@@ -59,7 +59,7 @@ public class ArActivity extends AppCompatActivity {
         makeLine();
     }
 
-    private void setButtonBallAction(){
+    private void setButtonBallAction() {
         button_ball.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,14 +67,15 @@ public class ArActivity extends AppCompatActivity {
             }
         });
     }
-    private void setButtonLineAction(){
+
+    private void setButtonLineAction() {
         button_line.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!lineActive) {
+                if (!lineActive) {
                     lineActive = true;
                     Toast.makeText(context, "plane을 클릭하면 선을 그립니다.", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     lineActive = false;
                     Toast.makeText(context, "선 그리기 비활성화", Toast.LENGTH_SHORT).show();
                 }
@@ -82,7 +83,7 @@ public class ArActivity extends AppCompatActivity {
         });
     }
 
-    private void makeBall(){
+    private void makeBall() {
         ArSceneView arSceneView = arFragment.getArSceneView();
         Scene scene = arSceneView.getScene();
 
@@ -95,9 +96,9 @@ public class ArActivity extends AppCompatActivity {
 
         MaterialFactory.makeOpaqueWithColor(context, new Color(android.graphics.Color.RED))
                 .thenAccept(
-                    material -> {
-                        ballRenderable[0] = ShapeFactory.makeSphere(0.5f, targetPos, material);
-                    });
+                        material -> {
+                            ballRenderable[0] = ShapeFactory.makeSphere(0.5f, targetPos, material);
+                        });
 
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
         node.setWorldPosition(targetPos);
@@ -109,19 +110,20 @@ public class ArActivity extends AppCompatActivity {
 
     }
 
-    private void makeLine(){
+    private void makeLine() {
         arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
             @Override
             public void onTapPlane(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
-                if(!lineActive){
+                if (!lineActive) {
                     return;
                 }
 
-                if(!isClickedSecond){
+                if (!isClickedSecond) {
                     isClickedSecond = true;
                     previousPoint = new Vector3(hitResult.getHitPose().tx(),
                             hitResult.getHitPose().ty(),
                             hitResult.getHitPose().tz());
+
                     Log.d(TAG, "previousPosition   " + previousPoint.x + ", " + previousPoint.y + ", " + previousPoint.z);
                     Toast.makeText(context, "다음 지점을 선택해주세요", Toast.LENGTH_SHORT).show();
                     return;
@@ -146,17 +148,24 @@ public class ArActivity extends AppCompatActivity {
                 Vector3 center = Vector3.add(previousPoint, newPoint).scaled(0.5f);
 
                 Color color_red = new Color(0xFFFF0000);
-                Renderable[] renderable = new Renderable[1];
+//                Renderable[] renderable = new Renderable[1];
+
                 MaterialFactory.makeOpaqueWithColor(context, color_red)
                         .thenAccept(
                                 material -> {
-                                    renderable[0] = ShapeFactory.makeCube(size,
+                                    ModelRenderable renderable;
+                                    renderable = ShapeFactory.makeCube(size,
                                             Vector3.zero(), material);
+                                    node.setParent(anchorNode);
+                                    node.setRenderable(renderable);
+                                    node.setWorldPosition(center);
+                                    node.setWorldRotation(rotation);
                                 });
-                node.setParent(anchorNode);
-                node.setRenderable(renderable[0]);
-                node.setWorldPosition(center);
-                node.setWorldRotation(rotation);
+
+//                node.setParent(anchorNode);
+//                node.setRenderable(renderable);
+//                node.setWorldPosition(center);
+//                node.setWorldRotation(rotation);
             }
         });
 
