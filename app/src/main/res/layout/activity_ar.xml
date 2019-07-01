@@ -6,11 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ArActivity">
 
-
     <fragment android:name="com.google.ar.sceneform.ux.ArFragment"
         android:id="@+id/ux_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
+    <android.opengl.GLSurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
 
     <Button
         android:id="@+id/button_ball"
@@ -41,8 +48,26 @@
         android:background="@color/colorBlack"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/ux_fragment"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_pointcloud"
         app:layout_constraintStart_toEndOf="@id/button_ball" />
+
+    <Button
+        android:id="@+id/button_pointcloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="PC"
+        android:padding="20dp"
+        android:textSize="20sp"
+        android:background="@color/colorBlack"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_line" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>

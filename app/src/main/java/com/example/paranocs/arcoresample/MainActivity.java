@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         setStartACtion();
     }
 
+
     private void setCheckVersionAction(){
+
+
         button_checkVersion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
